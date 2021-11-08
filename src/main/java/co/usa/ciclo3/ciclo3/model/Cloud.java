@@ -4,83 +4,74 @@
  */
 package co.usa.ciclo3.ciclo3.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.List;
 
-/**
- *
- * @author juand2g
- */
+//************usamos Lonbok para ahorrarnos los getters y setters******************************************************
 
+@Data
 @Entity
-@Table(name="cloud")
+@NoArgsConstructor
+@AllArgsConstructor
+//*******************************************************************************************************************
+/*
+@Data//genera getters y setters
+@Entity //le indicamos que es una entidad o tabla y que es serializable
+@NoArgsConstructor//genera constructor sin argumentos
+@AllArgsConstructor//genera constructor con argumentos
+@Table(name = "cloud")//le indicamos que es una tabla y le damos el nombre
 
-
+ */
+@Table(name = "cloud")
 public class Cloud implements Serializable {
-    
-    @Id 
+    /*
+    *le damos la anotación de id y generated para la clave primaria
+    * y column para darle caracteristicas a las tablas
+    */
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String brand;
+    @Column(name="name",length=45)
     private String name;
-    private Date year;
+    @Column(name="brand",length=45)
+    private String brand;
+    @Column(name="year",length=4)
+    private Integer year;
+    @Column(name="description",length=250)
     private String description;
-    private Integer category_id;
 
-    public Integer getId() {
-        return id;
-    }
+    /* *************************************** Empezamos a da las relaciones entre tablas ****************************/
+    /*
+    creamos un objeto de tipo category para traer los datos de la categoria y le damos un join con el id de category
+    @JsonIgnoreProperties("clouds") para que no traiga redundancia de datos cuando se use category
+    relación muchas nubes pueden tener una categoria
+     */
+    @ManyToOne
+    @JsonIgnoreProperties("clouds")
+    @JoinColumn(name="idCategory")
+    private Category category;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    /*
+    relación una nube muchos mensajes
+    creamos objeto de tipo messages para traer los mensajes de esa nube
+    @JsonIgnoreProperties({"cloud","client"}) le decinos que ignore las nubes y los clientes para evitar redundancia
+     */
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cloud")
+    @JsonIgnoreProperties({"cloud","client"})
+    private List<Message> messages;
+    /*
+        relación una nube muchas reservaciones
+        creamos objeto de tipo reservation para traer las reservaciones de esa nube
+        @JsonIgnoreProperties({"cloud","messages"}) le decinos que ignore las nubes y los mensajes para evitar redundancia
+         */
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cloud")
+    @JsonIgnoreProperties({"cloud","messages"})
+    public List<Reservation> reservations;
 
-    public String getBrand() {
-        return brand;
-    }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getCategory_id() {
-        return category_id;
-    }
-
-    public void setCategory_id(Integer category_id) {
-        this.category_id = category_id;
-    }
-    
-    
-            
-    
 }

@@ -1,67 +1,62 @@
 package co.usa.ciclo3.ciclo3.web;
 
 import co.usa.ciclo3.ciclo3.model.Client;
-import co.usa.ciclo3.ciclo3.model.Cloud;
-
-import co.usa.ciclo3.ciclo3.service.CloudService;
+import co.usa.ciclo3.ciclo3.model.Message;
+import co.usa.ciclo3.ciclo3.service.ClientService;
+import co.usa.ciclo3.ciclo3.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Optional;
-/*
-@RestController lo marcamos como controlador
-@RequestMapping("/Cloud") le damos una URL base
-@CrossOrigin(origins = "*") habilitamos para que pueda ser accedido por otro origen, esto es para poder conectar nuestro frontend
-public class CategoryController {//con esta clase vamos a acceder a los servicos
-@Autowired//creamos objeto de la clase CategoryService y lo inyectamos
- */
+
 @RestController
-@RequestMapping("/Cloud")
+@RequestMapping("/Message")
 @CrossOrigin(origins = "*",methods={RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,RequestMethod.DELETE})
-public class CloudController {
+
+public class MessageController {
+
     @Autowired
-    private CloudService service;
+    private MessageService service;
 
     /* ******************************************Creamos el CRUD************************************************/
     /* *************************************************Get/Read****************************************/
 
     @GetMapping("/all")
-    public List<Cloud> getCloud(){
+    public List<Message> getMessage(){
         return service.getAll();
     }
 
     //obtenemos el get con Id, le indicamos que le vamos a pasar un parámetro
     @GetMapping("/{id}")            //pasamos el Id por parámetro a la variable clientId
-    public Optional<Cloud> getCloud(@PathVariable("id") int cloudId){
-        return service.getCloud(cloudId);
+    public Optional<Message> getMessage(@PathVariable("id") int messageId){
+        return service.getMessage(messageId);
     }
     /* *************************************************Post/Create****************************************/
 
     //este es el Post
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)//para retornar el estado(201)
-    public Cloud save(@RequestBody Cloud cloud){//requiéralo del cuerpo de la consulta
+    public Message save(@RequestBody Message message){//requiéralo del cuerpo de la consulta
 
-        return service.save(cloud);
+        return service.save(message);
     }
     /* *************************************************Put/Update****************************************/
 
     //este es el put
     @PutMapping("/update")
     @ResponseStatus(HttpStatus.CREATED)//para retornar el estado(201)
-    public Cloud update(@RequestBody Cloud cloud){//requiéralo del cuerpo de la consulta
-        return service.update(cloud);
+    public Message update(@RequestBody Message message){//requiéralo del cuerpo de la consulta
+        return service.update(message);
     }
     /* *************************************************Delete****************************************/
 
     //este es el delete
     @DeleteMapping("/{id}")  //con @PathVariable le indicamos que le vamos a enviar una variable a través del parámetro
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public boolean delete(@PathVariable("id") int cloudId){
+    public boolean delete(@PathVariable("id") int messageId){
 
-        return service.delete(cloudId);
+        return service.delete(messageId);
     }
-
-
 }
