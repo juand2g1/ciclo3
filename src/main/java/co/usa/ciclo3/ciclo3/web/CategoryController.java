@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/Category")
+@RequestMapping("/Category")
 @CrossOrigin(origins = "*",methods={RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,RequestMethod.DELETE})
 public class CategoryController {
 
@@ -22,17 +22,17 @@ public class CategoryController {
     /* ******************************************Creamos el CRUD************************************************/
     /* *************************************************Get/Read****************************************/
 
+    @GetMapping("/all")
+    public List<Category> getCategory(){
+        return service.getAll();
+    }
+
     //obtenemos el get con Id, le indicamos que le vamos a pasar un parámetro
     @GetMapping("/{id}")            //pasamos el Id por parámetro a la variable clientId
     public Optional<Category> getCategory(@PathVariable("id") int categoryId){
         return service.getCategory(categoryId);
     }
     
-    @GetMapping("/all")
-    public List<Category> getCategory(){
-        return service.getAll();
-    }
-
     /* *************************************************Post/Create****************************************/
 
     //este es el Post
@@ -60,3 +60,4 @@ public class CategoryController {
         return service.delete(categoryId);
     }
 }
+
