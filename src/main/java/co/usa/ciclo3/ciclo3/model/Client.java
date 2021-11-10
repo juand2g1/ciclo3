@@ -17,11 +17,10 @@ import java.util.List;
 @Data//genera getters y setters
 @NoArgsConstructor//genera constructor sin argumentos
 @AllArgsConstructor//genera constructor con todos los argumentos
-
 @Entity //le indicamos que es una entidad o tabla y que es serializable
 @Table(name = "client")//le indicamos que es una tabla y le damos el nombre
 public class Client implements Serializable {
-
+    
     @Id//le indicamos que es la llave principal
     @GeneratedValue(strategy = GenerationType.IDENTITY)//generar auto incremento
     private Integer idClient;

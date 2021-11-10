@@ -13,12 +13,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name="category")
-
 public class Category implements Serializable {
     //le damos la llave primaria al id de la tabla category
     @Id
