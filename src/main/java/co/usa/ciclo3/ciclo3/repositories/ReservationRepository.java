@@ -39,6 +39,7 @@ public class ReservationRepository {
     /*Insert y Update
      * actualiza o crea nuevo registro*/
     public  Reservation save(Reservation reservation){
+        reservation.setStatus("created");
         return repository.save(reservation);
     }
 
